@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.square{
+  background: #54c6df;
+  border-color: rgb(246, 40, 40);
+}
+.board-row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.board-container{
+  margin: 20px;
+  height: 100%;
+  width: 100%;
+}
+.h4{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.button{
+  width: 85px;
+  height: 35px;
+  border-radius: 0cap;
+  border-color: rgb(32, 3, 95);
+  background-color: #f01212;
+}
