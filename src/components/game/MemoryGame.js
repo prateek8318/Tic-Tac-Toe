@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Shuffle, RotateCcw, Trophy } from 'lucide-react';
 import useSound from '../../hooks/useSound';
@@ -7,7 +7,7 @@ import './MemoryGame.css';
 const MemoryGame = ({ onBack, scores, setScores }) => {
   const { playMoveSound, playWinSound, playClickSound } = useSound();
   
-  const emojis = ['🎮', '🎯', '🎪', '🎨', '🎭', '🎲'];
+  const emojis = useMemo(() => ['🎮', '🎯', '🎪', '🎨', '🎭', '🎲'], []);
   const [cards, setCards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
@@ -15,7 +15,7 @@ const MemoryGame = ({ onBack, scores, setScores }) => {
   const [isWon, setIsWon] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const initializeGame = () => {
+  const initializeGame = useCallback(() => {
     const gameEmojis = [...emojis, ...emojis];
     const shuffled = gameEmojis.sort(() => Math.random() - 0.5);
     setCards(shuffled.map((emoji, index) => ({ id: index, emoji })));
@@ -24,11 +24,11 @@ const MemoryGame = ({ onBack, scores, setScores }) => {
     setMoves(0);
     setIsWon(false);
     setIsPlaying(true);
-  };
+  }, [emojis]);
 
   useEffect(() => {
     initializeGame();
-  }, []);
+  }, [initializeGame]);
 
   useEffect(() => {
     if (flippedCards.length === 2) {

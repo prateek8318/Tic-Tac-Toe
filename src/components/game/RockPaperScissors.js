@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Hand, RotateCcw, Trophy } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import useSound from '../../hooks/useSound';
 import './RockPaperScissors.css';
 
