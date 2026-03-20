@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion } from 'framer-motion';
 import GameBoard from './GameBoard';
 import ScoreBoard from './ScoreBoard';
@@ -8,7 +8,7 @@ import useGameLogic from '../../hooks/useGameLogic';
 import useSound from '../../hooks/useSound';
 import './TicTacToeGame.css';
 
-const TicTacToeGame = ({ onBack, scores, setScores }) => {
+const TicTacToeGame = ({ onBack, scores, setScores: setScoresProp }) => {
   const {
     board,
     currentPlayer,
@@ -23,6 +23,11 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
   } = useGameLogic();
 
   const { playMoveSound, playWinSound, playDrawSound, playClickSound } = useSound();
+
+  // Wrap setScores in useCallback to prevent infinite re-renders
+  const setScores = useCallback((newScores) => {
+    setScoresProp(newScores);
+  }, [setScoresProp]);
 
   const handleMove = (index) => {
     if (makeMove(index)) {
@@ -45,7 +50,6 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
     resetScores();
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (winner) {
       setTimeout(() => playWinSound(), 500);
@@ -53,7 +57,7 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
     } else if (isDraw) {
       setTimeout(() => playDrawSound(), 500);
     }
-  }, [winner, isDraw]);
+  }, [winner, isDraw, playWinSound, playDrawSound, setScores]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

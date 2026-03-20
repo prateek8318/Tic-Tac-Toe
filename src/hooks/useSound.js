@@ -33,6 +33,7 @@ const useSound = () => {
     }
   }, []);
 
+  // Memoize the sound functions to prevent infinite re-renders
   const playMoveSound = useCallback(() => playSound('move'), [playSound]);
   const playWinSound = useCallback(() => playSound('win'), [playSound]);
   const playDrawSound = useCallback(() => playSound('draw'), [playSound]);

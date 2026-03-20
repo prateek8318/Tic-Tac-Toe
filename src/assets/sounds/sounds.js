@@ -4,8 +4,8 @@
 export const sounds = {
   // Move sound - short click
   move: 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAAAQAEAAEAfAAAQAQABAAgAZGF0YQQAAAAA',
-  // Win sound - using your actual sound.mp3 file
-  win: '/assets/sounds/sound.mp3',
+  // Win sound - using your actual sound.mp3 file from public folder
+  win: '/sound.mp3',
   // Draw sound - descending tone
   draw: 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAAAQAEAAEAfAAAQAQABAAgAZGF0YQQAAAAA',
   // Click sound - very short tap
