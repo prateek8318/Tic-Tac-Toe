@@ -52,7 +52,7 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
     } else if (isDraw) {
       setTimeout(() => playDrawSound(), 500);
     }
-  }, [winner, isDraw, playWinSound, playDrawSound, setScores]);
+  }, [winner, isDraw]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -96,6 +96,7 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
           board={board}
           onMove={handleMove}
           winningLine={winningLine}
+          winner={winner}
           currentPlayer={currentPlayer}
           isPlaying={isPlaying}
         />

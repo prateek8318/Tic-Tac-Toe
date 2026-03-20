@@ -52,7 +52,7 @@ const WinnerCelebration = ({ winner, onCelebrationEnd }) => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [winner, onCelebrationEnd]);
+  }, [winner]);
 
   const handleClose = () => {
     setIsVisible(false);

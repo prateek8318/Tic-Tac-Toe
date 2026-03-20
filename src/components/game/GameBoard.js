@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './GameBoard.css';
 
-const GameBoard = ({ board, onMove, winningLine, currentPlayer, isPlaying }) => {
-  const isGameOver = winningLine.length > 0;
+const GameBoard = ({ board, onMove, winningLine, winner, currentPlayer, isPlaying }) => {
+  const isGameOver = winner || winningLine.length > 0;
   const cellVariants = {
     hidden: { scale: 0, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { duration: 0.3 } },
