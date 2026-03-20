@@ -52,7 +52,8 @@ const WinnerCelebration = ({ winner, onCelebrationEnd }) => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [winner, onCelebrationEnd]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [winner]);
 
   const handleClose = () => {
     setIsVisible(false);

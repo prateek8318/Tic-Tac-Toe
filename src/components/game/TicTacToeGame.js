@@ -45,6 +45,7 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
     resetScores();
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (winner) {
       setTimeout(() => playWinSound(), 500);
@@ -52,7 +53,7 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
     } else if (isDraw) {
       setTimeout(() => playDrawSound(), 500);
     }
-  }, [winner, isDraw, playWinSound, playDrawSound, setScores]);
+  }, [winner, isDraw]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
