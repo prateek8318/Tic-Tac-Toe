@@ -1,29 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar'
-import Board from './components/Board';
+import GameHub from './components/game/GameHub';
 import About from './components/AboutUs';
-import Signin from './components/Signin';
-import Signup from './components/Signup';
 import Contact from './components/contact';
 import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App min-h-screen flex flex-col">
       <Router>
-    <Navbar/>
-    <Routes>
-          <Route path="/about" element={<About/>} /> 
-          <Route path="board" element={<Board/>} /> 
-          <Route path="signin" element={<Signin/>} /> 
-          <Route path="signup" element={<Signup/>} /> 
-          <Route path='/contact' element={<Contact/>}/>
-          </Routes>
-      
-      <Footer/>
+        <Navbar/>
+        <main className="flex-grow">
+          <Routes>
+                <Route path="/" element={<GameHub/>} />
+                <Route path="/about" element={<About/>} /> 
+                <Route path="/board" element={<GameHub/>} /> 
+                <Route path='/contact' element={<Contact/>}/>
+                </Routes>
+        </main>
+        <Footer/>
       </Router>
-      </div>
+    </div>
   );
 }
 

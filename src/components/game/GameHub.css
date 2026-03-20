@@ -1,0 +1,111 @@
+.game-hub {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-hub::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: backgroundMove 20s linear infinite;
+}
+
+@keyframes backgroundMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.score-tracker {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 10;
+  min-width: 200px;
+  pointer-events: none;
+}
+
+.score-tracker h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1f2937;
+  text-align: center;
+}
+
+.score-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 10px;
+  border-left: 3px solid #667eea;
+}
+
+.game-name {
+  font-size: 0.9rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.score-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+@media (max-width: 768px) {
+  .score-tracker {
+    position: static;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    min-width: auto;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .game-hub {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .score-tracker {
+    padding: 1rem;
+  }
+  
+  .score-tracker h3 {
+    font-size: 1rem;
+  }
+  
+  .game-name {
+    font-size: 0.8rem;
+  }
+  
+  .score-value {
+    font-size: 1rem;
+  }
+}

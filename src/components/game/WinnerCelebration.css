@@ -1,0 +1,129 @@
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+}
+
+.celebration-content {
+  text-align: center;
+  animation: celebrationPulse 2s ease-in-out infinite;
+  position: relative;
+  cursor: default;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.close-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  color: #000;
+}
+
+.celebration-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.winner-crown {
+  font-size: 4rem;
+  animation: bounce 1s infinite;
+}
+
+.winner-text h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.winner-text p {
+  font-size: 1.5rem;
+  color: white;
+  margin: 0.5rem 0 0 0;
+}
+
+.winner-emoji {
+  font-size: 5rem;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes celebrationPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .celebration-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .winner-text h1 {
+    font-size: 2rem;
+  }
+  
+  .winner-text p {
+    font-size: 1.2rem;
+  }
+  
+  .winner-crown {
+    font-size: 3rem;
+  }
+  
+  .winner-emoji {
+    font-size: 3rem;
+  }
+  
+  .close-button {
+    width: 35px;
+    height: 35px;
+    top: -5px;
+    right: -5px;
+  }
+}
