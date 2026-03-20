@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import './GameBoard.css';
 
 const GameBoard = ({ board, onMove, winningLine, currentPlayer, isPlaying }) => {
+  const isGameOver = winningLine.length > 0;
   const cellVariants = {
     hidden: { scale: 0, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { duration: 0.3 } },
@@ -32,9 +33,9 @@ const GameBoard = ({ board, onMove, winningLine, currentPlayer, isPlaying }) => 
             variants={cellVariants}
             initial="hidden"
             animate="visible"
-            whileHover={cell ? {} : "hover"}
-            whileTap={cell ? {} : "tap"}
-            onClick={() => isPlaying && !cell && onMove(index)}
+            whileHover={cell || isGameOver ? {} : "hover"}
+            whileTap={cell || isGameOver ? {} : "tap"}
+            onClick={() => isPlaying && !cell && !isGameOver && onMove(index)}
             custom={index}
           >
             {cell === 'X' && (

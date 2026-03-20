@@ -24,21 +24,21 @@ const useSound = () => {
     oscillator.frequency.value = frequency;
     oscillator.type = type;
 
-    gainNode.gain.setValueAtTime(0.3, audioContext.current.currentTime);
+    gainNode.gain.setValueAtTime(0.05, audioContext.current.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.current.currentTime + duration);
 
     oscillator.start(audioContext.current.currentTime);
     oscillator.stop(audioContext.current.currentTime + duration);
   };
 
-  const playMoveSound = () => playSound(600, 0.1);
+  const playMoveSound = () => playSound(600, 0.05);
   const playWinSound = () => {
-    playSound(523, 0.1);
-    setTimeout(() => playSound(659, 0.1), 100);
-    setTimeout(() => playSound(784, 0.2), 200);
+    playSound(523, 0.05);
+    setTimeout(() => playSound(659, 0.05), 100);
+    setTimeout(() => playSound(784, 0.1), 200);
   };
-  const playDrawSound = () => playSound(300, 0.3, 'sawtooth');
-  const playClickSound = () => playSound(800, 0.05);
+  const playDrawSound = () => playSound(300, 0.15, 'sawtooth');
+  const playClickSound = () => playSound(800, 0.02);
 
   return { playMoveSound, playWinSound, playDrawSound, playClickSound };
 };
