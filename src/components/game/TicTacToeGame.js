@@ -52,7 +52,7 @@ const TicTacToeGame = ({ onBack, scores, setScores }) => {
     } else if (isDraw) {
       setTimeout(() => playDrawSound(), 500);
     }
-  }, [winner, isDraw]);
+  }, [winner, isDraw, playWinSound, playDrawSound, setScores]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
