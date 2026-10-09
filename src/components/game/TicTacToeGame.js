@@ -15,6 +15,7 @@ const TicTacToeGame = ({ onBack, scores, setScores: setScoresProp }) => {
     winner,
     isDraw,
     winningLine,
+    scores: gameScores,
     isPlaying,
     makeMove,
     resetGame,
@@ -92,7 +93,7 @@ const TicTacToeGame = ({ onBack, scores, setScores: setScoresProp }) => {
         </motion.div>
 
         <ScoreBoard 
-          scores={{ X: 0, O: 0, draws: 0 }}
+          scores={gameScores}
           currentPlayer={currentPlayer}
           isPlaying={isPlaying}
         />

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, Users, Phone } from 'lucide-react';
+import { Menu, X, Home, Users, Phone, Sun, Moon } from 'lucide-react';
 import './Navbar.css';
 
-function Navbar() {
+function Navbar({ theme, onToggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -64,6 +64,9 @@ function Navbar() {
               </motion.a>
             ))}
           </div>
+          <button className="theme-toggle" onClick={onToggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title="Toggle theme">
+            {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
+          </button>
 
           <motion.button
             className="mobile-menu-button"

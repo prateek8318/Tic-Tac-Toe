@@ -27,9 +27,12 @@ const GameBoard = ({ board, onMove, winningLine, winner, currentPlayer, isPlayin
     <div className="game-board">
       <div className="board-grid">
         {board.map((cell, index) => (
-          <motion.div
+          <motion.button
             key={index}
             className={`cell ${isWinningCell(index) ? 'winning-cell' : ''}`}
+            type="button"
+            aria-label={`Cell ${index + 1}${cell ? `, ${cell}` : ', empty'}`}
+            disabled={!isPlaying || Boolean(cell) || Boolean(isGameOver)}
             variants={cellVariants}
             initial="hidden"
             animate="visible"
@@ -87,7 +90,7 @@ const GameBoard = ({ board, onMove, winningLine, winner, currentPlayer, isPlayin
                 </defs>
               </motion.svg>
             )}
-          </motion.div>
+          </motion.button>
         ))}
       </div>
     </div>

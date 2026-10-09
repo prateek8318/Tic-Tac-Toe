@@ -44,14 +44,10 @@ function ContactForm() {
       setErrors(validationErrors);
     } else {
       setErrors({});
+      const subject = encodeURIComponent(`Game Hub message from ${formData.name.trim()}`);
+      const body = encodeURIComponent(`${formData.message.trim()}\n\nFrom: ${formData.name.trim()} (${formData.email.trim()})`);
+      window.location.href = `mailto:pk8041401@gmail.com?subject=${subject}&body=${body}`;
       setSubmitted(true);
-      console.log('Form data submitted:', formData);
-      setFormData({
-        name: '',
-        email: '',
-        message: ''
-      });
-      setTimeout(() => setSubmitted(false), 3000);
     }
   };
 
@@ -85,10 +81,10 @@ function ContactForm() {
         >
           <h1 className="contact-title">
             <MessageSquare size={40} />
-            Get In Touch
+            Let's talk <span>games.</span>
           </h1>
           <p className="contact-subtitle">
-            Have feedback, suggestions, or just want to say hello? We'd love to hear from you!
+            Found a bug, have a game idea, or just want to say hi? Drop a note and we’ll open it in your email app.
           </p>
         </motion.div>
 
@@ -98,7 +94,8 @@ function ContactForm() {
             variants={itemVariants}
           >
             <div className="info-card">
-              <div className="info-item">
+                <div className="contact-card-intro"><span className="contact-orb"><MessageSquare size={22}/></span><strong>Good games get better together.</strong><p>Feedback and wild ideas are always welcome.</p></div>
+                <a className="info-item" href="mailto:pk8041401@gmail.com?subject=Hello%20Game%20Hub">
                 <div className="info-icon">
                   <Mail size={20} />
                 </div>
@@ -106,9 +103,9 @@ function ContactForm() {
                   <span className="info-label">Email</span>
                   <span className="info-value">pk8041401@gmail.com</span>
                 </div>
-              </div>
+                </a>
               
-              <div className="info-item">
+                <a className="info-item" href="tel:+917388437791">
                 <div className="info-icon">
                   <Phone size={20} />
                 </div>
@@ -116,9 +113,9 @@ function ContactForm() {
                   <span className="info-label">Phone</span>
                   <span className="info-value">+91 7388437791</span>
                 </div>
-              </div>
+                </a>
               
-              <div className="info-item">
+                <div className="info-item">
                 <div className="info-icon">
                   <MapPin size={20} />
                 </div>
@@ -142,55 +139,61 @@ function ContactForm() {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <CheckCircle size={24} />
-                <span>Message sent successfully! We'll get back to you soon.</span>
+                <span>Email draft is ready. Review it in your email app and press send.</span>
               </motion.div>
             )}
 
             <form onSubmit={handleSubmit} className="contact-form">
               <div className="form-group">
-                <label className="form-label">
+                <label className="form-label" htmlFor="contact-name">
                   <User size={16} />
                   Your Name
                 </label>
                 <input
                   type="text"
+                  id="contact-name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   className="form-input"
                   placeholder="Enter your name"
+                  required
                 />
                 {errors.name && <span className="error-message">{errors.name}</span>}
               </div>
 
               <div className="form-group">
-                <label className="form-label">
+                <label className="form-label" htmlFor="contact-email">
                   <Mail size={16} />
                   Email Address
                 </label>
                 <input
                   type="email"
+                  id="contact-email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   className="form-input"
                   placeholder="your.email@example.com"
+                  required
                 />
                 {errors.email && <span className="error-message">{errors.email}</span>}
               </div>
 
               <div className="form-group">
-                <label className="form-label">
+                <label className="form-label" htmlFor="contact-message">
                   <MessageSquare size={16} />
                   Your Message
                 </label>
                 <textarea
                   name="message"
+                  id="contact-message"
                   value={formData.message}
                   onChange={handleChange}
                   className="form-textarea"
                   placeholder="Tell us what's on your mind..."
                   rows="5"
+                  required
                 />
                 {errors.message && <span className="error-message">{errors.message}</span>}
               </div>
@@ -202,9 +205,10 @@ function ContactForm() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Send size={18} />
-                Send Message
+                Open email draft
               </motion.button>
             </form>
+            <p className="contact-privacy">Your message stays in your email app until you choose to send it.</p>
           </motion.div>
         </div>
       </div>

@@ -7,23 +7,23 @@ function About() {
   const features = [
     {
       icon: Gamepad2,
-      title: 'Multiple Games',
-      description: 'Enjoy Tic-Tac-Toe, Memory Game, and Rock Paper Scissors in one place'
+      title: 'Three kinds of play',
+      description: 'Grid strategy, memory training, and a best-of-five mind game'
     },
     {
       icon: Zap,
-      title: 'Modern Design',
-      description: 'Beautiful animations, gradients, and glassmorphism effects'
+      title: 'Play at your pace',
+      description: 'Choose a relaxed round or raise the difficulty when you are ready'
     },
     {
       icon: Trophy,
-      title: 'Score Tracking',
-      description: 'Track your wins and progress across all games'
+      title: 'Personal bests',
+      description: 'Keep your wins, fastest clears, and high scores close at hand'
     },
     {
       icon: Users,
-      title: 'User Friendly',
-      description: 'Intuitive interface with smooth interactions'
+      title: 'A clever opponent',
+      description: 'Rock Paper Scissors watches your habits and tries to counter them'
     }
   ];
 
@@ -57,10 +57,10 @@ function About() {
         >
           <h1 className="about-title">
             <Gamepad2 size={40} />
-            About Game Hub
+            Play has a place.
           </h1>
           <p className="about-subtitle">
-            Your ultimate destination for classic games with modern twist
+            A little arcade for quick challenges, close matches, and “one more round.”
           </p>
         </motion.div>
 
@@ -69,11 +69,11 @@ function About() {
           variants={itemVariants}
         >
           <div className="about-description">
-            <h2>Welcome to the Future of Gaming!</h2>
+            <h2>Built for the next round.</h2>
             <p>
-              Game Hub brings together three classic games - Tic-Tac-Toe, Memory Game, and Rock Paper Scissors - 
-              with stunning modern design, smooth animations, and engaging sound effects. Whether you're looking to 
-              challenge your memory, test your strategy, or enjoy quick fun, we've got you covered.
+              This is a small, focused arcade: sharpen your memory across three difficulty levels, take on an adaptive
+              Rock Paper Scissors rival, or settle into a strategic Tic-Tac-Toe match. Your wins and personal records
+              stay saved on this device, so every visit picks up where your streak left off.
             </p>
           </div>
 
@@ -105,7 +105,7 @@ function About() {
         >
           <h2 className="tech-title">
             <Code size={24} />
-            Built With Modern Technology
+            The craft behind the games
           </h2>
           <div className="tech-list">
             <div className="tech-item">

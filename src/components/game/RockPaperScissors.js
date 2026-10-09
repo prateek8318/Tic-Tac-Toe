@@ -1,226 +1,107 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { RotateCcw } from 'lucide-react';
+import { ArrowLeft, Brain, FileText, Hand, RotateCcw, Scissors, Sparkles, Trophy } from 'lucide-react';
 import useSound from '../../hooks/useSound';
 import './RockPaperScissors.css';
 
-const RockPaperScissors = ({ onBack, scores, setScores }) => {
+const CHOICES = [
+  { id: 'rock', name: 'Rock', Icon: Hand, beats: 'scissors' },
+  { id: 'paper', name: 'Paper', Icon: FileText, beats: 'rock' },
+  { id: 'scissors', name: 'Scissors', Icon: Scissors, beats: 'paper' }
+];
+const pickCounter = (id) => CHOICES.find(choice => choice.beats === id);
+
+const RockPaperScissors = ({ onBack, setScores }) => {
   const { playMoveSound, playWinSound, playDrawSound, playClickSound } = useSound();
-  
-  const choices = [
-    { id: 'rock', emoji: '✊', name: 'Rock', beats: 'scissors' },
-    { id: 'paper', emoji: '✋', name: 'Paper', beats: 'rock' },
-    { id: 'scissors', emoji: '✌️', name: 'Scissors', beats: 'paper' }
-  ];
-
+  const [matchScore, setMatchScore] = useState({ player: 0, cpu: 0, draws: 0 });
+  const [history, setHistory] = useState([]);
   const [playerChoice, setPlayerChoice] = useState(null);
-  const [computerChoice, setComputerChoice] = useState(null);
+  const [cpuChoice, setCpuChoice] = useState(null);
   const [result, setResult] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [score, setScore] = useState({ player: 0, computer: 0, draws: 0 });
+  const [busy, setBusy] = useState(false);
+  const [champion, setChampion] = useState(null);
+  const [round, setRound] = useState(0);
+  const [thinking, setThinking] = useState(false);
+  const roundTimer = useRef(null);
+  useEffect(() => () => window.clearTimeout(roundTimer.current), []);
 
-  const makeComputerChoice = () => {
-    const randomIndex = Math.floor(Math.random() * choices.length);
-    return choices[randomIndex];
+  const aiRead = useMemo(() => {
+    if (!history.length) return 'No pattern yet — the first move is yours.';
+    const counts = history.reduce((all, id) => ({ ...all, [id]: (all[id] || 0) + 1 }), {});
+    const favorite = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+    return `You lean ${favorite}. The counter is watching.`;
+  }, [history]);
+
+  const chooseCpu = () => {
+    if (!history.length) return CHOICES[Math.floor(Math.random() * CHOICES.length)];
+    const recent = history.slice(-5);
+    const counts = recent.reduce((all, id) => ({ ...all, [id]: (all[id] || 0) + 1 }), {});
+    const max = Math.max(...Object.values(counts));
+    const likely = Object.keys(counts).filter(id => counts[id] === max);
+    const predicted = likely[Math.floor(Math.random() * likely.length)];
+    return pickCounter(predicted);
   };
 
-  const determineWinner = (player, computer) => {
-    if (player.id === computer.id) return 'draw';
-    if (player.beats === computer.id) return 'player';
-    return 'computer';
-  };
-
-  const handleChoice = (choice) => {
-    if (isPlaying) return;
-    
+  const playRound = (choice) => {
+    if (busy || champion) return;
     playClickSound();
-    setIsPlaying(true);
+    setBusy(true);
+    setThinking(true);
     setPlayerChoice(choice);
-    
-    setTimeout(() => {
-      const compChoice = makeComputerChoice();
-      setComputerChoice(compChoice);
-      
-      const gameResult = determineWinner(choice, compChoice);
-      setResult(gameResult);
-      
-      if (gameResult === 'player') {
-        playWinSound();
-        setScore(prev => ({ ...prev, player: prev.player + 1 }));
-        setScores(prev => ({ ...prev, rps: (prev.rps || 0) + 1 }));
-      } else if (gameResult === 'draw') {
-        playDrawSound();
-        setScore(prev => ({ ...prev, draws: prev.draws + 1 }));
-      } else {
-        setScore(prev => ({ ...prev, computer: prev.computer + 1 }));
-      }
-      
-      playMoveSound();
-      setIsPlaying(false);
-    }, 1000);
-  };
-
-  const resetGame = () => {
-    setPlayerChoice(null);
-    setComputerChoice(null);
+    setCpuChoice(null);
     setResult(null);
-    setIsPlaying(false);
+    roundTimer.current = window.setTimeout(() => {
+      const cpu = chooseCpu();
+      const outcome = choice.id === cpu.id ? 'draw' : choice.beats === cpu.id ? 'player' : 'cpu';
+      setCpuChoice(cpu);
+      setHistory(current => [...current, choice.id]);
+      setRound(current => current + 1);
+      setThinking(false);
+      setResult(outcome);
+      if (outcome === 'player') {
+        playWinSound();
+        const next = { ...matchScore, player: matchScore.player + 1 };
+        setMatchScore(next);
+        if (next.player === 3) {
+          setChampion('player');
+          setScores(previous => ({ ...previous, rps: (previous.rps || 0) + 1 }));
+        }
+      } else if (outcome === 'cpu') {
+        playMoveSound();
+        const next = { ...matchScore, cpu: matchScore.cpu + 1 };
+        setMatchScore(next);
+        if (next.cpu === 3) setChampion('cpu');
+      } else {
+        playDrawSound();
+        setMatchScore(current => ({ ...current, draws: current.draws + 1 }));
+      }
+      setBusy(false);
+      roundTimer.current = null;
+    }, 650);
   };
 
-  const resetScores = () => {
-    setScore({ player: 0, computer: 0, draws: 0 });
-    resetGame();
+  const resetMatch = () => {
+    window.clearTimeout(roundTimer.current);
+    roundTimer.current = null;
+    setMatchScore({ player: 0, cpu: 0, draws: 0 });
+    setHistory([]); setPlayerChoice(null); setCpuChoice(null); setResult(null);
+    setBusy(false); setChampion(null); setRound(0); setThinking(false);
   };
 
-  const choiceVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 0.3 } },
-    hover: { scale: 1.1, y: -10, transition: { duration: 0.2 } },
-    tap: { scale: 0.9 }
-  };
-
-  return (
-    <div className="rps-game">
-      <div className="game-header">
-        <h2 className="game-title">Rock Paper Scissors</h2>
-        <div className="score-board">
-          <div className="score-item">
-            <span>You: {score.player}</span>
-          </div>
-          <div className="score-item">
-            <span>Draws: {score.draws}</span>
-          </div>
-          <div className="score-item">
-            <span>Computer: {score.computer}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="battle-area">
-        <div className="player-section">
-          <h3>Your Choice</h3>
-          <div className="choice-display">
-            {playerChoice ? (
-              <motion.div
-                className="chosen-choice"
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <span className="choice-emoji">{playerChoice.emoji}</span>
-                <span className="choice-name">{playerChoice.name}</span>
-              </motion.div>
-            ) : (
-              <div className="choice-placeholder">?</div>
-            )}
-          </div>
-        </div>
-
-        <div className="vs-section">
-          <motion.div 
-            className="vs-text"
-            animate={{ scale: result ? [1, 1.2, 1] : 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            VS
-          </motion.div>
-          {result && (
-            <motion.div 
-              className={`result ${result}`}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ 
-                color: 'white',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                padding: '0.5rem 1rem',
-                borderRadius: '10px',
-                background: result === 'player' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 
-                           result === 'computer' ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' : 
-                           'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'
-              }}
-            >
-              {result === 'player' && '🎉 You Win!'}
-              {result === 'computer' && '😔 You Lose!'}
-              {result === 'draw' && '🤝 It\'s a Draw!'}
-            </motion.div>
-          )}
-        </div>
-
-        <div className="computer-section">
-          <h3>Computer's Choice</h3>
-          <div className="choice-display">
-            {computerChoice ? (
-              <motion.div
-                className="chosen-choice"
-                initial={{ scale: 0, rotate: 180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <span className="choice-emoji">{computerChoice.emoji}</span>
-                <span className="choice-name">{computerChoice.name}</span>
-              </motion.div>
-            ) : (
-              <div className="choice-placeholder">?</div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="choices-section">
-        <h3>Make Your Choice</h3>
-        <div className="choices-grid">
-          {choices.map((choice) => (
-            <motion.button
-              key={choice.id}
-              className="choice-btn"
-              variants={choiceVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
-              whileTap="tap"
-              onClick={() => handleChoice(choice)}
-              disabled={isPlaying}
-            >
-              <span className="choice-emoji">{choice.emoji}</span>
-              <span className="choice-name">{choice.name}</span>
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      <div className="game-controls">
-        <motion.button
-          className="control-btn"
-          onClick={resetGame}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <RotateCcw size={20} />
-          New Round
-        </motion.button>
-        
-        <motion.button
-          className="control-btn danger"
-          onClick={resetScores}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Reset Scores
-        </motion.button>
-        
-        <motion.button
-          className="control-btn back-btn"
-          onClick={onBack}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Back to Games
-        </motion.button>
-      </div>
+  return <section className="rps-game">
+    <button className="mini-back" onClick={onBack}><ArrowLeft size={16}/> Arcade</button>
+    <header className="rps-heading"><span className="section-kicker"><Sparkles size={14}/> PATTERN BREAKER</span><h2>Outthink the <em>opponent.</em></h2><p>First to 3 wins. The AI learns your habits — switch it up to stay ahead.</p></header>
+    <div className="rps-matchbar"><div><small>ROUND</small><strong>{String(round + 1).padStart(2, '0')}</strong></div><div className="match-score"><span>You</span><strong>{matchScore.player}<i>:</i>{matchScore.cpu}</strong><span>CPU</span></div><div><small>DRAWS</small><strong>{matchScore.draws}</strong></div></div>
+    <div className="rps-race" aria-label="First to three wins"><span className={matchScore.player > 0 ? 'filled' : ''}/><span className={matchScore.player > 1 ? 'filled' : ''}/><span className={matchScore.player > 2 ? 'filled' : ''}/><i>FIRST TO 3</i><span className={matchScore.cpu > 0 ? 'cpu-filled' : ''}/><span className={matchScore.cpu > 1 ? 'cpu-filled' : ''}/><span className={matchScore.cpu > 2 ? 'cpu-filled' : ''}/></div>
+    <div className="rps-battle">
+      <div className={`rps-side ${result === 'player' ? 'winner-side' : ''}`}><span className="rps-side-label">YOUR PICK</span><div className="rps-token">{playerChoice ? <playerChoice.Icon size={38}/> : <span>?</span>}</div><strong>{playerChoice?.name || 'Your move'}</strong></div>
+      <div className="rps-versus"><span>VS</span>{thinking && <i>Reading your pattern…</i>}{result && <b className={`rps-outcome ${result}`}>{result === 'player' ? 'ROUND WON' : result === 'cpu' ? 'ROUND LOST' : 'DRAW — AGAIN'}</b>}</div>
+      <div className={`rps-side ${result === 'cpu' ? 'winner-side' : ''}`}><span className="rps-side-label">ADAPTIVE CPU</span><div className="rps-token cpu-token">{cpuChoice ? <cpuChoice.Icon size={38}/> : <Brain size={30}/>}</div><strong>{cpuChoice?.name || 'Studying you'}</strong></div>
     </div>
-  );
+    <div className="rps-ai-note"><Brain size={17}/><span><strong>AI read:</strong> {aiRead}</span><div className="pattern-dots">{history.slice(-5).map((id, index) => <i key={`${id}-${index}`} title={id}/>)}</div></div>
+    {champion ? <motion.div className="rps-champion" initial={{ scale: .9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}><Trophy size={21}/><strong>{champion === 'player' ? 'You took the match!' : 'CPU takes this one.'}</strong><button onClick={resetMatch}><RotateCcw size={15}/> Rematch</button></motion.div> : <div className="rps-picks"><div className="rps-picks-title"><span>MAKE YOUR MOVE</span><small>Change your pattern to fool the AI</small></div><div className="rps-pick-row">{CHOICES.map(({ id, name, Icon }) => <motion.button key={id} className={`rps-pick rps-pick-${id}`} disabled={busy} onClick={() => playRound({ id, name, Icon, beats: CHOICES.find(item => item.id === id).beats })} whileHover={{ y: -4 }} whileTap={{ scale: .96 }}><Icon size={24}/><strong>{name}</strong><small>{id === 'rock' ? 'crushes scissors' : id === 'paper' ? 'covers rock' : 'cuts paper'}</small></motion.button>)}</div></div>}
+    <div className="rps-footer-actions"><button onClick={resetMatch}><RotateCcw size={15}/> Reset match</button></div>
+  </section>;
 };
 
 export default RockPaperScissors;

@@ -1,12 +1,14 @@
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
+  background: color-mix(in srgb, var(--page) 88%, transparent);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
   z-index: 100;
 }
+.theme-toggle { width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--text);cursor:pointer;margin-left:10px;transition:all .2s; }
+.theme-toggle:hover { color:var(--accent);border-color:var(--accent);transform:rotate(-8deg); }
 
 .navbar-container {
   max-width: 1200px;
@@ -28,7 +30,7 @@
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: #1f2937;
+  color: var(--text);
   font-weight: bold;
   font-size: 1.5rem;
   transition: all 0.3s ease;
@@ -64,7 +66,7 @@
   padding: 0.75rem 1rem;
   border-radius: 12px;
   text-decoration: none;
-  color: #4b5563;
+  color: var(--muted);
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;
@@ -115,7 +117,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--surface);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -128,7 +130,7 @@
   padding: 1rem 1.5rem;
   border-bottom: 1px solid rgba(229, 231, 235, 0.5);
   text-decoration: none;
-  color: #4b5563;
+  color: var(--muted);
   font-weight: 500;
   transition: all 0.3s ease;
 }

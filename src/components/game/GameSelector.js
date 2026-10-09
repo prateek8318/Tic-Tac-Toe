@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Gamepad2, Zap, Target, Grid3X3 } from 'lucide-react';
+import { Zap, Target, Grid3X3, ArrowUpRight, Sparkles } from 'lucide-react';
 import './GameSelector.css';
 
 const GameSelector = ({ onGameSelect, selectedGame }) => {
@@ -8,21 +8,24 @@ const GameSelector = ({ onGameSelect, selectedGame }) => {
     {
       id: 'tictactoe',
       name: 'Tic-Tac-Toe',
-      description: 'Classic 3x3 grid game',
+      description: 'Think ahead. Own the grid.',
+      tag: 'STRATEGY',
       icon: Grid3X3,
       color: '#3b82f6'
     },
     {
       id: 'memory',
       name: 'Memory Game',
-      description: 'Match the pairs',
+      description: 'Train your brain, one flip at a time.',
+      tag: 'BRAIN TRAINING',
       icon: Zap,
       color: '#10b981'
     },
     {
       id: 'rockpaperscissors',
       name: 'Rock Paper Scissors',
-      description: 'Beat the computer',
+      description: 'Read the room. Outsmart the odds.',
+      tag: 'QUICK PLAY',
       icon: Target,
       color: '#ef4444'
     }
@@ -52,11 +55,9 @@ const GameSelector = ({ onGameSelect, selectedGame }) => {
       animate="visible"
     >
       <div className="selector-header">
-        <h2 className="selector-title">
-          <Gamepad2 size={32} />
-          Choose Your Game
-        </h2>
-        <p className="selector-subtitle">Select a game to start playing</p>
+        <div className="section-kicker"><Sparkles size={14}/> THE ARCADE</div>
+        <h2 className="selector-title">Choose your <em>challenge.</em></h2>
+        <p className="selector-subtitle">Three ways to play. Which one are you feeling?</p>
       </div>
 
       <div className="games-grid">
@@ -67,20 +68,23 @@ const GameSelector = ({ onGameSelect, selectedGame }) => {
           return (
             <motion.div
               key={game.id}
-              className={`game-card ${isSelected ? 'selected' : ''}`}
+              className={`game-card ${isSelected ? 'selected' : ''} game-card-${game.id}`}
               variants={cardVariants}
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => onGameSelect(game.id)}
+              onClick={() => onGameSelect(game.id)} role="button" tabIndex={0}
+              onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') onGameSelect(game.id); }}
             >
               <div 
                 className="game-icon"
-                style={{ background: `linear-gradient(135deg, ${game.color} 0%, ${game.color}dd 100%)` }}
+                style={{ '--game-color': game.color }}
               >
                 <Icon size={40} />
               </div>
-              <h3 className="game-name">{game.name}</h3>
+              <span className="game-tag">{game.tag}</span>
+              <h3 className="card-title">{game.name}</h3>
               <p className="game-description">{game.description}</p>
+              <span className="card-play">PLAY NOW <ArrowUpRight size={16}/></span>
               {isSelected && (
                 <motion.div 
                   className="selected-badge"
