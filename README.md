@@ -5,18 +5,23 @@ A modern, interactive web application featuring multiple classic games built wit
 ## 🎯 Features
 
 ### Games Included
-- **🎯 Tic-Tac-Toe** - Classic strategy game with AI opponent
-- **✂️ Rock Paper Scissors** - Hand gesture game with animated battles
-- **🧠 Memory Game** - Card matching game to test your memory
+- **❌ Tic-Tac-Toe** – vs CPU (Easy / Medium / Unbeatable minimax) or 2 players
+- **🔴 Connect Four** – vs CPU (alpha-beta search, 3 levels) or 2 players
+- **🔢 2048** – swipe or arrow keys, undo, auto-saves your board
+- **🐍 Snake** – swipe, on-screen D-pad or keyboard; speeds up as you grow
+- **💣 Minesweeper** – 3 levels, first tap always safe, long-press / flag mode, chording
+- **🧠 Memory Match** – 3 levels, score based on moves and time
+- **🎵 Simon Says** – classic and reverse modes
+- **🔨 Whack-a-Mole** – 30-second rounds, golden moles and bombs
+- **✊ Rock Paper Scissors** – the CPU learns your habits; first to 1 / 3 / 5
 
 ### Key Features
-- 🎨 **Modern UI/UX** - Beautiful, responsive design with Tailwind CSS
-- ✨ **Smooth Animations** - Engaging transitions using Framer Motion
-- 🎊 **Winner Celebrations** - Confetti effects for victories
-- 🔊 **Sound Effects** - Interactive audio feedback
-- 📊 **Score Tracking** - Persistent score board for all games
-- 📱 **Mobile Responsive** - Works perfectly on all devices
-- 🌙 **Dark Mode Support** - Eye-friendly dark theme option
+- 📱 **App-like on mobile** – bottom tab bar, full-screen games, safe-area support, installable (PWA manifest)
+- 📊 **Stats page** – games played, wins, win rate and personal bests (saved in localStorage)
+- 🔊 **Synthesized sounds + haptics** – Web Audio tones, vibration on supported phones, one-tap mute
+- 🌗 **Dark / light theme** – follows your system the first time
+- 🎊 **Confetti celebrations** and bottom-sheet result screens
+- ⚡ **Lazy-loaded games** – each game is its own small chunk
 
 ## 🚀 Tech Stack
 
@@ -33,22 +38,23 @@ A modern, interactive web application featuring multiple classic games built wit
 
 ```
 src/
+├── App.js                    # Routes: /, /play/:gameId, /stats, /about, /contact
 ├── components/
-│   ├── game/                 # Game components
-│   │   ├── TicTacToeGame.js  # Tic-Tac-Toe logic
-│   │   ├── RockPaperScissors.js # RPS game logic
-│   │   ├── MemoryGame.js     # Memory card game
-│   │   ├── GameHub.js        # Main game selector
-│   │   └── ...
-│   ├── ui/                   # Reusable UI components
-│   ├── Navbar.js             # Navigation bar
-│   ├── Footer.js             # Footer component
-│   └── AboutUs.js            # About page
-├── hooks/
-│   ├── useGameLogic.js       # Custom game logic hook
-│   └── useSound.js           # Sound management hook
-└── utils/                    # Utility functions
+│   ├── app/AppShell.js       # Top bar, mobile tab bar, footer
+│   ├── app/GameShell.js      # Shared game header, stats strip, help + result sheets
+│   ├── AboutUs.js, contact.js, Footer.js
+├── context/StatsContext.js   # Wins / played / best scores (localStorage)
+├── games/
+│   ├── registry.js           # List of games (add a new game here)
+│   ├── useSwipe.js           # Swipe gesture hook
+│   └── <game>/               # One folder per game (component, logic, css)
+├── lib/                      # sound, storage, confetti, random helpers
+└── pages/                    # Home, Play, Stats
 ```
+
+### Adding a new game
+1. Create `src/games/<id>/MyGame.js` and wrap it in `<GameShell id="<id>">`.
+2. Add an entry to `src/games/registry.js`.
 
 ## 🛠️ Installation & Setup
 

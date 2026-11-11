@@ -1,0 +1,40 @@
+.snake-wrap {
+  position: relative;
+  width: min(100%, 460px, 52dvh);
+  aspect-ratio: 1;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  touch-action: none;
+}
+.snake-canvas { --snake-tile: rgba(255, 255, 255, .035); display: block; width: 100%; height: 100%; }
+:root[data-theme="light"] .snake-canvas { --snake-tile: rgba(20, 30, 60, .04); }
+.snake-wrap .stage-overlay { border: 0; color: var(--text); cursor: pointer; font: inherit; }
+
+.snake-controls { display: flex; justify-content: center; }
+.dpad {
+  display: grid;
+  grid-template-areas: ". up ." "left mid right" ". down .";
+  grid-template-columns: repeat(3, 58px);
+  grid-template-rows: repeat(3, 52px);
+  gap: 6px;
+}
+.dpad button {
+  border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 16px;
+  display: grid; place-items: center; cursor: pointer; transition: transform .08s, background .12s;
+}
+.dpad button:active { transform: scale(.92); background: color-mix(in srgb, var(--game) 20%, var(--surface)); }
+.dpad-up { grid-area: up; }
+.dpad-down { grid-area: down; }
+.dpad-left { grid-area: left; }
+.dpad-right { grid-area: right; }
+.dpad-mid { grid-area: mid; color: var(--muted) !important; }
+.dpad-mid:disabled { opacity: .4; }
+
+/* Keyboard + mouse users don't need the pad */
+@media (hover: hover) and (pointer: fine) and (min-width: 821px) {
+  .snake-controls { display: none; }
+  .snake-wrap { width: min(100%, 520px, 66dvh); }
+}

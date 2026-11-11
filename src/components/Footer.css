@@ -1,6 +1,8 @@
 .footer {
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  color: #f9fafb;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border-top: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+  color: var(--text);
   margin-top: auto;
   position: relative;
   overflow: hidden;
@@ -17,9 +19,7 @@
 }
 
 .footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 1rem 1rem;
+  padding: 3rem var(--gutter) 1.25rem;
 }
 
 .footer-grid {
@@ -50,7 +50,7 @@
 .footer-title {
   font-size: 1.5rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -58,7 +58,7 @@
 }
 
 .footer-description {
-  color: #9ca3af;
+  color: var(--muted);
   line-height: 1.6;
   font-size: 0.95rem;
 }
@@ -74,16 +74,16 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--line);
   border-radius: 50%;
-  color: #9ca3af;
+  color: var(--muted);
   text-decoration: none;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--line);
 }
 
 .social-link:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
@@ -104,7 +104,7 @@
   left: 0;
   width: 30px;
   height: 2px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
 }
 
 .footer-links {
@@ -117,7 +117,7 @@
 }
 
 .footer-link {
-  color: #9ca3af;
+  color: var(--muted);
   text-decoration: none;
   transition: all 0.3s ease;
   position: relative;
@@ -128,13 +128,13 @@
   content: '→';
   position: absolute;
   left: 0;
-  color: #667eea;
+  color: var(--accent);
   opacity: 0;
   transition: all 0.3s ease;
 }
 
 .footer-link:hover {
-  color: #667eea;
+  color: var(--accent);
   padding-left: 1.5rem;
 }
 
@@ -152,12 +152,12 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: #9ca3af;
+  color: var(--muted);
   font-size: 0.95rem;
 }
 
 .contact-item svg {
-  color: #667eea;
+  color: var(--accent);
   flex-shrink: 0;
 }
 
@@ -168,12 +168,12 @@
 
 .footer-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
   margin-bottom: 1.5rem;
 }
 
 .footer-copyright {
-  color: #6b7280;
+  color: var(--muted);
   font-size: 0.9rem;
   margin: 0;
 }

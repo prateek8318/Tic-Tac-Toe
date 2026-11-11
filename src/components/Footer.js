@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Github, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import './Footer.css';
 
@@ -35,8 +36,8 @@ function Footer() {
               <h3 className="footer-title">Game Hub</h3>
             </div>
             <p className="footer-description">
-              Experience multiple games with modern design, animations, and sound effects. 
-              Play Tic-Tac-Toe, Memory Game, Rock Paper Scissors and enjoy hours of fun!
+              Nine quick games in one place: Tic-Tac-Toe, Connect Four, 2048, Snake,
+              Minesweeper, Memory Match, Simon Says, Whack-a-Mole and Rock Paper Scissors.
             </p>
             <div className="social-links">
               {socialLinks.map((social, index) => (
@@ -62,9 +63,10 @@ function Footer() {
           >
             <h4 className="footer-heading">Quick Links</h4>
             <ul className="footer-links">
-              <li><a href="/board" className="footer-link">Home</a></li>
-              <li><a href="/about" className="footer-link">About</a></li>
-              <li><a href="/contact" className="footer-link">Contact</a></li>
+              <li><Link to="/" className="footer-link">Games</Link></li>
+              <li><Link to="/stats" className="footer-link">Stats</Link></li>
+              <li><Link to="/about" className="footer-link">About</Link></li>
+              <li><Link to="/contact" className="footer-link">Contact</Link></li>
             </ul>
           </motion.div>
 
