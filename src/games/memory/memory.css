@@ -1,0 +1,33 @@
+.mem-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  gap: 10px;
+  width: min(100%, 440px, calc(56dvh * var(--cols) / 4));
+  perspective: 900px;
+}
+.mem-grid.cols-6 { width: min(100%, 560px, calc(62dvh * 1.5)); gap: 7px; }
+.mem-card { aspect-ratio: 3 / 4; border: 0; padding: 0; background: transparent; cursor: pointer; }
+.mem-inner { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+.mem-card.up .mem-inner { transform: rotateY(180deg); }
+.mem-back, .mem-front { position: absolute; inset: 0; border-radius: 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; }
+.mem-back {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .25), transparent 40%),
+    linear-gradient(145deg, var(--game), color-mix(in srgb, var(--game) 50%, #1e3a8a));
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+}
+.mem-back::after { content: "?"; color: rgba(255, 255, 255, .75); font-weight: 900; font-size: clamp(16px, 5vw, 26px); }
+.mem-front { transform: rotateY(180deg); background: var(--surface); border: 1px solid var(--line); font-size: clamp(24px, 8vw, 40px); }
+.cols-6 .mem-front { font-size: clamp(20px, 6vw, 32px); }
+.cols-6 .mem-back, .cols-6 .mem-front { border-radius: 10px; }
+.mem-card.matched .mem-front { background: color-mix(in srgb, var(--game) 16%, var(--surface)); border-color: color-mix(in srgb, var(--game) 55%, transparent); }
+.mem-card.matched .mem-inner { animation: mem-match .4s ease-out; }
+.mem-card.wrong .mem-front { border-color: var(--danger); animation: mem-shake .35s; }
+@keyframes mem-match { 50% { transform: rotateY(180deg) scale(1.08); } }
+@keyframes mem-shake { 25%, 75% { translate: -3px 0; } 50% { translate: 3px 0; } }
+
+/* Scale emoji with the card size */
+.mem-card { container-type: inline-size; }
+.mem-card .mem-front { font-size: 52cqw; }
+.mem-card .mem-back::after { font-size: 34cqw; }
+.mem-card:not(.up):hover .mem-inner { transform: translateY(-3px); }

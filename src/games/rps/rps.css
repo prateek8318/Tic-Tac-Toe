@@ -1,0 +1,39 @@
+.rps-arena { width: min(100%, 460px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; }
+.rps-hand {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 8px; border-radius: 24px;
+  background: var(--surface); border: 1px solid var(--line); transition: border-color .2s, background .2s, opacity .2s;
+}
+.rps-hand small { font-size: 10px; letter-spacing: .16em; font-weight: 850; color: var(--muted); }
+.rps-hand.won { border-color: var(--success); background: color-mix(in srgb, var(--success) 12%, var(--surface)); }
+.rps-hand.lost { opacity: .55; }
+.rps-emoji { display: block; font-size: clamp(56px, 18vw, 84px); line-height: 1.1; }
+.rps-flip { display: block; transform: scaleX(-1); }
+.rps-vs { font-weight: 900; color: var(--muted); font-size: 14px; letter-spacing: .1em; }
+.rps-status.you .dot { background: var(--success); box-shadow: 0 0 10px var(--success); }
+.rps-status.cpu .dot { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
+.rps-race { display: flex; align-items: center; gap: 10px; }
+.rps-race > div { display: flex; gap: 5px; }
+.rps-race small { font-size: 10px; letter-spacing: .14em; font-weight: 850; color: var(--muted); }
+.rps-race span { width: 12px; height: 12px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--line); transition: background .2s; }
+.rps-race span.on.you { background: var(--success); border-color: transparent; }
+.rps-race span.on.cpu { background: var(--danger); border-color: transparent; }
+
+.rps-picks { width: min(100%, 460px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
+.rps-pick {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 6px; border-radius: 20px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; transition: transform .12s, border-color .15s;
+}
+.rps-pick span { font-size: 38px; line-height: 1.1; }
+.rps-pick strong { font-size: 13px; }
+.rps-pick:not(:disabled):hover { border-color: color-mix(in srgb, var(--game) 60%, transparent); transform: translateY(-2px); }
+.rps-pick:not(:disabled):active { transform: scale(.95); }
+.rps-pick:disabled { opacity: .5; cursor: default; }
+
+@media (min-width: 1024px) {
+  .rps-emoji { font-size: 120px; }
+  .rps-hand { padding: 28px 12px; border-radius: 30px; }
+  .rps-pick { padding: 22px 8px; }
+  .rps-pick span { font-size: 52px; }
+  .rps-pick strong { font-size: 15px; }
+}
